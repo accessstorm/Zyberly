@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Zyberly - Premium Digital Agency</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {   
+                    fontFamily: {
+                        sans: ['Inter', 'SF Pro Display', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        'zyberly-black': '#111111',
+                        'zyberly-gray': {
+                            100: '#f9f9f9',
+                            200: '#e5e5e5',
+                            300: '#d4d4d4',
+                        },
+                        'metallic': {
+                            100: '#e8e8e8',
+                            200: '#c0c0c0',
+                            300: '#a0a0a0',
+                            400: '#808080',
+                            500: '#505050',
+                            900: '#121212',
+                        },
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
+                        'rotate-slow': 'rotateSlow 15s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { boxShadow: '0 0 15px 0 rgba(255, 255, 255, 0.2)' },
+                            '50%': { boxShadow: '0 0 30px 5px rgba(255, 255, 255, 0.4)' },
+                        },
+                        rotateSlow: {
+                            '0%': { transform: 'rotate(0deg)' },
+                            '100%': { transform: 'rotate(360deg)' },
+                        },
+                    },
+                },
+            },
+        }
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Alpine.js Init for cursor -->
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('globalState', () => ({
+                scrolled: false,
+                cursorPosition: { x: 0, y: 0 },
+                activeFilter: 'all',
+                mobileMenuOpen: false,
+                init() {
+                    this.checkScroll();
+                    window.addEventListener('scroll', () => this.checkScroll());
+                    document.addEventListener('mousemove', (e) => {
+                        this.cursorPosition = {
+                            x: e.clientX,
+                            y: e.clientY
+                        };
+                    });
+                },
+                checkScroll() {
+                    this.scrolled = window.pageYOffset > 60;
+                }
+            }));
+        });
+    </script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Inter', 'SF Pro Display', system-ui, sans-serif;
+            overflow-x: hidden;
+        }
+        
+        .nav-link::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 1px;
+            background: #ffffff;
+            transition: width 0.3s;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* 3D Metallic styles */
+        .metallic-text {
+            background: linear-gradient(135deg, #ffffff 0%, #c0c0c0 50%, #505050 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 2px 2px 3px rgba(0,0,0,0.2);
+        }
+        
+        .glass-effect {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-b from-metallic-900 to-black text-white antialiased" x-data="globalState">
+    <!-- Custom Cursor (follows mouse) -->
+    <div class="fixed w-6 h-6 rounded-full border-2 border-white mix-blend-difference pointer-events-none z-50 hidden md:block"
+         :style="`transform: translate(${cursorPosition.x - 12}px, ${cursorPosition.y - 12}px); transition: transform 0.1s ease-out;`"></div>
+         
+    <!-- Navigation Bar -->
+    <header x-data="{ mobileMenuOpen: false }" class="fixed w-full bg-black bg-opacity-60 backdrop-filter backdrop-blur-lg z-50 transition-all duration-300" 
+            :class="{ 'shadow-[0_0_15px_rgba(255,255,255,0.1)]': scrolled }"
+            @scroll.window="scrolled = (window.pageYOffset > 20)">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center">
+                    <img src="zyberly.png" alt="Zyberly" class="h-8">
+                    <span class="text-2xl font-bold tracking-tighter metallic-text ml-3">Zyberly</span>
+                </a>
+                
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="index.html" class="nav-link font-medium text-white hover:text-gray-300 transition-all">Home</a>
+                    <a href="index.html#services" class="nav-link font-medium text-white hover:text-gray-300 transition-all">Services</a>
+                    <a href="index.html#process" class="nav-link font-medium text-white hover:text-gray-300 transition-all">Process</a>
+                    <a href="portfolio.html" class="nav-link font-medium text-blue-400 hover:text-blue-300 transition-all">Portfolio</a>
+                    <a href="about.html" class="nav-link font-medium text-white hover:text-gray-300 transition-all">About</a>
+                    <a href="#contact" class="nav-link font-medium text-white hover:text-gray-300 transition-all">Contact</a>
+                </nav>
+                
+                <!-- Mobile Menu Button -->
+                <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden focus:outline-none" aria-label="Toggle menu">
+                    <svg x-show="!mobileMenuOpen" class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                    <svg x-show="mobileMenuOpen" class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Mobile Navigation -->
+            <div x-show="mobileMenuOpen" 
+                 x-transition:enter="transition ease-out duration-200"
+                 x-transition:enter-start="opacity-0 -translate-y-4"
+                 x-transition:enter-end="opacity-100 translate-y-0"
+                 x-transition:leave="transition ease-in duration-150"
+                 x-transition:leave-start="opacity-100 translate-y-0"
+                 x-transition:leave-end="opacity-0 -translate-y-4"
+                 class="md:hidden py-4 space-y-4 glass-effect mt-4 rounded-lg" 
+                 style="display: none;">
+                <a href="index.html" class="block py-2 text-center font-medium text-white hover:text-gray-300">Home</a>
+                <a href="index.html#services" class="block py-2 text-center font-medium text-white hover:text-gray-300">Services</a>
+                <a href="index.html#process" class="block py-2 text-center font-medium text-white hover:text-gray-300">Process</a>
+                <a href="portfolio.html" class="block py-2 text-center font-medium text-blue-400 hover:text-blue-300">Portfolio</a>
+                <a href="about.html" class="block py-2 text-center font-medium text-white hover:text-gray-300">About</a>
+                <a href="#contact" class="block py-2 text-center font-medium text-white hover:text-gray-300">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-r from-metallic-900 to-black pt-32 pb-20 text-white">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <!-- Decorative elements -->
+            <div class="absolute transform -translate-y-1/4 left-3/4">
+                <div class="w-96 h-96 bg-blue-500/10 rounded-full opacity-20 blur-[150px]"></div>
+            </div>
+            <div class="absolute transform translate-y-1/3 -left-20">
+                <div class="w-72 h-72 bg-purple-500/10 rounded-full opacity-20 blur-[150px]"></div>
+            </div>
+            <div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] border border-white opacity-10 rounded-full animate-rotate-slow"></div>
+            <!-- Grid background -->
+            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNIDAgMCBMIDEwMCAwIE0gMCAxMDAgTCAxMDAgMTAwIE0gMCAwIEwgMCAxMDAgTSAxMDAgMCBMIDEwMCAxMDAiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjEpIiBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjEiLz48L3N2Zz4=')] opacity-10"></div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center">
+                <div class="w-16 h-1 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 mx-auto mb-6 animate-pulse-glow"></div>
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight metallic-text">Our Portfolio</h1>
+                <p class="mt-4 max-w-2xl mx-auto text-xl text-gray-300">
+                    Explore our latest projects and see how we help brands transform their digital presence.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-16 bg-black/90 border-y border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <p class="text-lg md:text-xl text-white/90 italic">
+                    "From 2024 onwards, we've established endeavors that sustain their pertinence today, in the future, and for generations ahead"
+                </p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="p-6 glass-effect rounded-xl">
+                    <div class="text-4xl md:text-5xl font-bold metallic-text mb-2">12+</div>
+                    <div class="text-blue-400 font-medium">Clients</div>
+                </div>
+                <div class="p-6 glass-effect rounded-xl">
+                    <div class="text-4xl md:text-5xl font-bold metallic-text mb-2">4</div>
+                    <div class="text-blue-400 font-medium">Projects</div>
+                </div>
+                <div class="p-6 glass-effect rounded-xl">
+                    <div class="text-4xl md:text-5xl font-bold metallic-text mb-2">3+</div>
+                    <div class="text-blue-400 font-medium">Units sold</div>
+                </div>
+                <div class="p-6 glass-effect rounded-xl">
+                    <div class="text-4xl md:text-5xl font-bold metallic-text mb-2">8+</div>
+                    <div class="text-blue-400 font-medium">Designed</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Filters -->
+    <section class="py-12 bg-gradient-to-b from-black to-metallic-900 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-wrap justify-center gap-3 mb-12">
+                <button @click="activeFilter = 'all'" :class="activeFilter === 'all' ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white' : 'bg-white/5 text-gray-300 hover:bg-white/10'" class="px-5 py-2 rounded-full text-sm font-medium transition-all">All</button>
+                <button @click="activeFilter = 'webdesign'" :class="activeFilter === 'webdesign' ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white' : 'bg-white/5 text-gray-300 hover:bg-white/10'" class="px-5 py-2 rounded-full text-sm font-medium transition-all">Web Design</button>
+                <button @click="activeFilter = 'branding'" :class="activeFilter === 'branding' ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white' : 'bg-white/5 text-gray-300 hover:bg-white/10'" class="px-5 py-2 rounded-full text-sm font-medium transition-all">Branding</button>
+                <button @click="activeFilter = 'hospitality'" :class="activeFilter === 'hospitality' ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white' : 'bg-white/5 text-gray-300 hover:bg-white/10'" class="px-5 py-2 rounded-full text-sm font-medium transition-all">Hospitality</button>
+                <button @click="activeFilter = 'tech'" :class="activeFilter === 'tech' ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white' : 'bg-white/5 text-gray-300 hover:bg-white/10'" class="px-5 py-2 rounded-full text-sm font-medium transition-all">Tech</button>
+                <button @click="activeFilter = 'retail'" :class="activeFilter === 'retail' ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white' : 'bg-white/5 text-gray-300 hover:bg-white/10'" class="px-5 py-2 rounded-full text-sm font-medium transition-all">Retail</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Grid -->
+    <section class="py-16 bg-gradient-to-b from-metallic-900 to-black relative">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <!-- Decorative elements -->
+            <div class="absolute right-0 top-0 w-96 h-96 bg-blue-500/10 rounded-full filter blur-[150px]"></div>
+            <div class="absolute left-0 bottom-0 w-96 h-96 bg-purple-500/10 rounded-full filter blur-[150px]"></div>
+            <div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] border border-white opacity-10 rounded-full animate-rotate-slow"></div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1 -->
+                <div x-show="activeFilter === 'all' || activeFilter === 'webdesign' || activeFilter === 'hospitality'" class="group">
+                    <a href="https://www.miragehotel.in/" target="_blank" class="block overflow-hidden rounded-xl glass-effect border border-white/10 shadow-lg transition-all duration-300 hover:shadow-xl hover:border-white/20">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Mirage Hotel" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                            <span class="absolute bottom-4 left-4 bg-gradient-to-r from-blue-600/80 to-purple-600/80 text-white text-xs font-semibold px-3 py-1 rounded-full">Hospitality</span>
+                        </div>
+                        <div class="p-6 backdrop-blur-md">
+                            <h3 class="text-xl font-semibold metallic-text group-hover:text-blue-400 transition-colors">Mirage Hotel</h3>
+                            <p class="mt-2 text-gray-300">A Mumbai based hotel chain with renowned tour and stay options. Website developed under company guidance.</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Project 2 -->
+                <div x-show="activeFilter === 'all' || activeFilter === 'webdesign' || activeFilter === 'tourism'" class="group">
+                    <a href="https://travelleaderskashmir.com/" target="_blank" class="block overflow-hidden rounded-xl glass-effect border border-white/10 shadow-lg transition-all duration-300 hover:shadow-xl hover:border-white/20">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Travel Leaders Kashmir" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                            <span class="absolute bottom-4 left-4 bg-gradient-to-r from-blue-600/80 to-purple-600/80 text-white text-xs font-semibold px-3 py-1 rounded-full">Tourism</span>
+                        </div>
+                        <div class="p-6 backdrop-blur-md">
+                            <h3 class="text-xl font-semibold metallic-text group-hover:text-blue-400 transition-colors">Travel Leaders Kashmir</h3>
+                            <p class="mt-2 text-gray-300">A Kashmir-based tour company with 20 years of experience providing exceptional travel services.</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Project 3 (In Development) -->
+                <div x-show="activeFilter === 'all' || activeFilter === 'webdesign' || activeFilter === 'tourism' || activeFilter === 'development'" class="group">
+                    <a href="https://gulmarg-destinations.vercel.app/" target="_blank" class="block overflow-hidden rounded-xl glass-effect border border-white/10 shadow-lg transition-all duration-300 hover:shadow-xl hover:border-white/20">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1571781926291-c477ebfd024b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Gulmarg Destinations" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                            <span class="absolute bottom-4 left-4 bg-gradient-to-r from-blue-600/80 to-purple-600/80 text-white text-xs font-semibold px-3 py-1 rounded-full">In Development</span>
+                        </div>
+                        <div class="p-6 backdrop-blur-md">
+                            <h3 class="text-xl font-semibold metallic-text group-hover:text-blue-400 transition-colors">Gulmarg Destinations</h3>
+                            <p class="mt-2 text-gray-300">Currently in development - A premium travel experience platform for Gulmarg, Kashmir.</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Project 4 -->
+                <div x-show="activeFilter === 'all' || activeFilter === 'webdesign' || activeFilter === 'hospitality'" class="group">
+                    <a href="#" target="_blank" class="block overflow-hidden rounded-xl glass-effect border border-white/10 shadow-lg transition-all duration-300 hover:shadow-xl hover:border-white/20">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Srinagar Delight" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                            <span class="absolute bottom-4 left-4 bg-gradient-to-r from-blue-600/80 to-purple-600/80 text-white text-xs font-semibold px-3 py-1 rounded-full">Hospitality</span>
+                        </div>
+                        <div class="p-6 backdrop-blur-md">
+                            <h3 class="text-xl font-semibold metallic-text group-hover:text-blue-400 transition-colors">Srinagar Delight</h3>
+                            <p class="mt-2 text-gray-300">A fine dining restaurant in Srinagar featuring traditional Kashmiri cuisine with a modern twist and online reservation system.</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Project 5 -->
+                <div x-show="activeFilter === 'all' || activeFilter === 'webdesign' || activeFilter === 'tech'" class="group">
+                    <a href="#" target="_blank" class="block overflow-hidden rounded-xl glass-effect border border-white/10 shadow-lg transition-all duration-300 hover:shadow-xl hover:border-white/20">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="KashmirTech" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                            <span class="absolute bottom-4 left-4 bg-gradient-to-r from-blue-600/80 to-purple-600/80 text-white text-xs font-semibold px-3 py-1 rounded-full">Tech</span>
+                        </div>
+                        <div class="p-6 backdrop-blur-md">
+                            <h3 class="text-xl font-semibold metallic-text group-hover:text-blue-400 transition-colors">KashmirTech Solutions</h3>
+                            <p class="mt-2 text-gray-300">A local tech startup offering innovative software solutions with a modern web application and dashboard.</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Project 6 -->
+                <div x-show="activeFilter === 'all' || activeFilter === 'webdesign' || activeFilter === 'retail'" class="group">
+                    <a href="#" target="_blank" class="block overflow-hidden rounded-xl glass-effect border border-white/10 shadow-lg transition-all duration-300 hover:shadow-xl hover:border-white/20">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1574634534894-89d7576c8259?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Kashmir Crafts" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                            <span class="absolute bottom-4 left-4 bg-gradient-to-r from-blue-600/80 to-purple-600/80 text-white text-xs font-semibold px-3 py-1 rounded-full">Retail</span>
+                        </div>
+                        <div class="p-6 backdrop-blur-md">
+                            <h3 class="text-xl font-semibold metallic-text group-hover:text-blue-400 transition-colors">Kashmir Crafts Collective</h3>
+                            <p class="mt-2 text-gray-300">An e-commerce platform for local artisans to showcase and sell traditional Kashmiri handicrafts worldwide.</p>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Project 7 -->
+                <div x-show="activeFilter === 'all' || activeFilter === 'branding' || activeFilter === 'tech'" class="group">
+                    <a href="#" target="_blank" class="block overflow-hidden rounded-xl glass-effect border border-white/10 shadow-lg transition-all duration-300 hover:shadow-xl hover:border-white/20">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="QuantumVision" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                            <span class="absolute bottom-4 left-4 bg-gradient-to-r from-blue-600/80 to-purple-600/80 text-white text-xs font-semibold px-3 py-1 rounded-full">Tech</span>
+                        </div>
+                        <div class="p-6 backdrop-blur-md">
+                            <h3 class="text-xl font-semibold metallic-text group-hover:text-blue-400 transition-colors">QuantumVision AI</h3>
+                            <p class="mt-2 text-gray-300">A startup specializing in AI-powered image recognition with custom brand identity and interactive website.</p>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Project 8 -->
+                <div x-show="activeFilter === 'all' || activeFilter === 'branding' || activeFilter === 'retail'" class="group">
+                    <a href="#" target="_blank" class="block overflow-hidden rounded-xl glass-effect border border-white/10 shadow-lg transition-all duration-300 hover:shadow-xl hover:border-white/20">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Elegance Apparel" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                            <span class="absolute bottom-4 left-4 bg-gradient-to-r from-blue-600/80 to-purple-600/80 text-white text-xs font-semibold px-3 py-1 rounded-full">Retail</span>
+                        </div>
+                        <div class="p-6 backdrop-blur-md">
+                            <h3 class="text-xl font-semibold metallic-text group-hover:text-blue-400 transition-colors">Elegance Apparel</h3>
+                            <p class="mt-2 text-gray-300">A high-end fashion boutique with a minimalist online store featuring premium photography and smooth checkout.</p>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Project 9 -->
+                <div x-show="activeFilter === 'all' || activeFilter === 'webdesign' || activeFilter === 'tech'" class="group">
+                    <a href="#" target="_blank" class="block overflow-hidden rounded-xl glass-effect border border-white/10 shadow-lg transition-all duration-300 hover:shadow-xl hover:border-white/20">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="DataFlow Analytics" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                            <span class="absolute bottom-4 left-4 bg-gradient-to-r from-blue-600/80 to-purple-600/80 text-white text-xs font-semibold px-3 py-1 rounded-full">Tech</span>
+                        </div>
+                        <div class="p-6 backdrop-blur-md">
+                            <h3 class="text-xl font-semibold metallic-text group-hover:text-blue-400 transition-colors">DataFlow Analytics</h3>
+                            <p class="mt-2 text-gray-300">A data analytics platform with interactive dashboards and real-time visualization capabilities for businesses.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Load More Button -->
+            <div class="mt-12 text-center">
+                <button class="px-8 py-3 glass-effect hover:bg-white/10 text-white font-medium rounded-lg transition-all duration-200 border border-white/10 hover:border-white/20">
+                    Load More Projects
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="contact" class="py-24 bg-indigo-800 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-3xl mx-auto text-center">
+                <h2 class="text-3xl md:text-4xl font-bold">Ready to start your project?</h2>
+                <p class="mt-4 text-xl text-indigo-200">Let's create something amazing together.</p>
+                <div class="mt-8">
+                    <a href="#" class="inline-block px-8 py-3 bg-white text-indigo-800 font-medium rounded-md shadow-md hover:bg-gray-100 transition-colors duration-200">
+                        Get in Touch
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="col-span-1 md:col-span-2">
+                    <a href="#" class="text-2xl font-bold text-white tracking-tighter">
+                        <span class="text-indigo-500">Zyber</span>ly
+                    </a>
+                    <p class="mt-4 max-w-xs">Premium digital agency crafting beautiful, functional digital experiences.</p>
+                    <div class="mt-6 flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-facebook text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-linkedin text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-white font-semibold mb-4">Services</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-white transition-colors duration-200">Web Design</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors duration-200">App Development</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors duration-200">E-Commerce</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors duration-200">Branding</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors duration-200">Digital Marketing</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-white font-semibold mb-4">Contact</h3>
+                    <ul class="space-y-2">
+                        <li>123 Innovation Street</li>
+                        <li>San Francisco, CA 94103</li>
+                        <li>contact@zyberly.com</li>
+                        <li>(555) 123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="opacity-70">© 2024 Zyberly. All rights reserved.</p>
+                <div class="mt-4 md:mt-0">
+                    <a href="#" class="text-sm hover:text-white mr-4">Privacy Policy</a>
+                    <a href="#" class="text-sm hover:text-white">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Initialize Alpine.js -->
+    <script>
+        document.addEventListener('alpine:init', () => {
+            // Global scroll tracking
+            window.addEventListener('scroll', () => {
+                Alpine.store('scroll', {
+                    position: window.pageYOffset
+                })
+            })
+        })
+    </script>
+</body>
+</html> 
